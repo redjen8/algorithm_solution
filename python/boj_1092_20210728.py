@@ -3,29 +3,23 @@ craneWeightLimit = list(map(int, input().rstrip().split()))
 M = int(input())
 boxWeight = list(map(int, input().rstrip().split()))
 
-craneWeightLimit.sort()
-boxWeight.sort()
+craneWeightLimit.sort(reverse=True)
+boxWeight.sort(reverse=True)
 res = 0
-craneAvailable = [1] * N
 
-for boxIdx in range(M):
-    for craneIdx in range(N):
-        if craneAvailable[craneIdx]:
-            if boxWeight[boxIdx] <= craneWeightLimit[craneIdx]:
-                craneAvailable[craneIdx] = 0
+if craneWeightLimit[0] < boxWeight[0]:
+    print(-1)
+    exit(0)
+else:
+    while boxWeight:
+        res += 1
+        for eachCrane in craneWeightLimit:
+            if not boxWeight:
                 break
             else:
-                continue
-        else:
-            continue
-    if sum(craneAvailable) == 0:
-        res += 1
-        craneAvailable = [1] * N
-        continue
-    if boxIdx != M-1 and craneIdx == N-1:
-        print(-1)
-        exit(0)
+                for i in range(len(boxWeight)):
+                    if boxWeight[i] <= eachCrane:
+                        boxWeight.pop(i)
+                        break
 
-if boxIdx == M-1:
-    res += 1
 print(res)
